@@ -1,0 +1,49 @@
+#include<stdio.h>
+#include<time.h>
+#include<stdlib.h>
+
+int array[10000000];
+
+int partion(int *a, int low, int high)
+{
+	int pivotkey = a[low];
+
+	while(low < high)
+	{
+		if(low < high && a[high] >= pivotkey) high--;
+		a[low] = a[high];
+		if(low < high && a[low] <= pivotkey) low++;
+		a[high] = a[low];
+	}
+
+	a[low] = pivotkey;
+	return low;
+}
+
+void qSort(int *a, int low, int high)
+{
+	int pivotpos;
+	if(low < high)
+	{
+		pivotpos = partion(a, low, high);
+		qSort(a, low, pivotpos-1);
+		qSort(a, pivotpos+1, high);
+	}
+}
+
+void main()
+{
+	int i;
+	clock_t start, finish;
+
+	srand((int)time(0));
+	for(i = 0; i < 10000000; i++){
+		array[i] = 1+(int)(10000000.0*rand()/(RAND_MAX+1.0));
+	}
+	
+	start = clock();
+	qSort(array, 0, 9999999);
+	finish = clock();
+
+	printf("the duration time is %.2f seconds\n", (double)(finish - start)/CLOCKS_PER_SEC);
+}

@@ -1,0 +1,64 @@
+/*
+ 8皇后问题的最原始解法，遍历所有组合
+*/
+#include<stdio.h>
+
+int count = 0;
+
+void print_queen(int *columnIndex)
+{
+	int i,j;
+	for(i = 0; i < 8; i++){
+		for(j = 0; j < columnIndex[i]; j++)printf("  ");
+		printf("*\n");
+	}
+}
+
+void permutation(int *columnIndex, int begin)
+{
+	int i = 0;
+	int temp;
+
+	if(begin < 0) return;
+	if(begin == 7) {
+		if(check(columnIndex)){
+			count ++;
+			print_queen(columnIndex);
+		}
+	}
+	else {
+		for(i = begin; i < 8; i++){
+			temp = columnIndex[begin];
+			columnIndex[begin] = columnIndex[i];
+			columnIndex[i] = temp;
+			permutation(columnIndex, begin+1);
+
+			columnIndex[i] = columnIndex[begin];
+			columnIndex[begin] = temp;
+		}
+	}
+}
+
+
+int check(int *columnIndex)
+{
+	int i,j;
+	for(i = 0; i < 8; i++){
+		for(j = i+1; j < 8; j++){
+			if((columnIndex[j]-columnIndex[i] == i-j) || (columnIndex[j]-columnIndex[i] == j-i))return 0;
+		}
+	}
+	return 1;
+}
+
+void main()
+{
+	int i;
+	int columnIndex[8];
+	for(i = 0; i < 8; i++){
+		columnIndex[i] = i;
+	}
+	permutation(columnIndex, 0);
+	printf("%d\n",count);
+}
+

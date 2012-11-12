@@ -1,0 +1,33 @@
+/*
+ 求给定字符序列的所有排列
+*/
+
+#include<stdio.h>
+
+void permutation(char *pStr, int len, int begin)
+{
+	int i;
+	char temp;
+
+	if(len <= 0 || begin < 0)return;
+	if(begin == len-1){
+		printf("%s\n",pStr);
+	} else{
+		for(i = begin; i < len; i++){
+			temp = pStr[begin];
+			pStr[begin] = pStr[i];
+			pStr[i] = temp;
+			
+			permutation(pStr, len, begin+1);
+			
+			pStr[i] = pStr[begin];
+			pStr[begin] = temp;
+		}
+	}
+}
+
+void main()
+{
+	char str[5] = {'a','b','c','d','\0'};
+	permutation(str,4,0);
+}

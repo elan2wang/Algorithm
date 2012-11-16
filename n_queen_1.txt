@@ -1,0 +1,102 @@
+/*
+ 随机爬山算法，未做任何优化
+ 存在问题：当冲突为1时，不能再通过交换两行的皇后位置解决冲突，导致死循环
+*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+#define N 10000
+
+int columnIndex[N];
+int collision_count;
+int step;
+
+void swap(int *a, int *b)
+{
+	int temp;
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void init_chessboard()
+{
+	int i,r;
+	for(i = 0; i < N; i++){
+		columnIndex[i] = i;
+	}
+	
+	srand((int)time(0));
+	for(i = 0; i < N; i++){
+		r = rand() % N;
+		swap(&columnIndex[r],&columnIndex[N-1-r]);
+	}
+
+//	for(i = 0; i < N; i++){
+//		printf("%d ", columnIndex[i]);
+//	}
+//	printf("\n");
+}
+
+int count_collision()
+{
+	int i,j;
+	int count = 0;
+
+	for(i = 0; i < N; i++){
+		for(j = 0; j < i; j++){
+			if(i-j == columnIndex[i]-columnIndex[j] || j-i == columnIndex[i]-columnIndex[j])
+				count++;
+		}
+	}
+	return count;
+}
+
+int climb()
+{
+	int r1,r2,count;
+
+	while(1){
+		r1 = rand() % N;
+		do{
+			r2 = rand() % N;
+		} while(r1 == r2);
+
+		swap(&columnIndex[r1], &columnIndex[r2]);
+		count = count_collision();
+
+		if(count < collision_count){
+			step++;
+			break;
+		} else {
+			swap(&columnIndex[r1], &columnIndex[r2]);
+		}
+	}
+	return count;
+}
+
+void solve_queen()
+{
+	init_chessboard();
+	collision_count = count_collision();
+	while(collision_count){
+		printf("%d\n",collision_count);
+		collision_count = climb();
+	}
+}
+
+void main()
+{
+	int i,j;
+
+	solve_queen();
+
+	printf("The total steps: %d\n", step);
+	for(i = 0; i < N; i++){
+		printf("%d ", columnIndex[i]);
+	}
+	printf("\n");
+}
+
+

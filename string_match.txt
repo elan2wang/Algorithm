@@ -1,0 +1,57 @@
+#include<stdio.h>
+
+#define N  100000
+
+char tStr[N];
+char pStr[N];
+int  pi[N];
+
+void cal_prefix(int *pi, char *p, int len)
+{
+	int i,j,k,count,begin;
+	pi[1] = 0;
+	for(i = len; i > 1; i--){
+		begin = 1;
+		for(j = begin, k = count = 0; j < i; j++){
+			if(p[j] == p[k++]) count++;
+			else{
+				k = count = 0;
+				begin ++;
+			}
+		}
+		pi[i] = count;
+	}
+}
+
+void kmp_matcher(int *pi, char *p, int len1 , char *t, int len2)
+{
+	int i,j;
+	cal_prefix(pi, p, len1);
+	
+	for(i = j = 0; i < len2 && j < len1; i++){
+		if(p[j++] != t[i]){
+			i += j-1;
+			j = pi[j];
+		}
+	}
+
+	if(j == len1) printf("Pattern occurs with shift %d .\n", i-len1);
+	if(i == len2) printf("Pattern doesn't occur .\n");
+}
+
+void main()
+{
+	int i, len1, len2;
+	char c;
+
+	len1 = len2 = 0;
+	
+    printf("Enter text(end with 0):\n");
+	while(scanf("%c", &c) && c!='0') tStr[len2++] = c;
+	getchar();
+
+	printf("Enter pattern string(end with 0):\n");
+	while(scanf("%c", &c) && c!='0') pStr[len1++] = c;
+	
+	kmp_matcher(pi, pStr, len1, tStr, len2);
+}

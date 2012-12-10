@@ -1,57 +1,51 @@
 #include<stdio.h>
 
-#define N  100000
+#define N 10000
+#define M 100
 
-char tStr[N];
-char pStr[N];
-int  pi[N];
+char T[N];
+char P[M];
+int next[M];
 
-void cal_prefix(int *pi, char *p, int len)
+void cal_prefix(char* p, int* next, int len)
 {
-	int i,j,k,count,begin;
-	pi[1] = 0;
-	for(i = len; i > 1; i--){
-		begin = 1;
-		for(j = begin, k = count = 0; j < i; j++){
-			if(p[j] == p[k++]) count++;
-			else{
-				k = count = 0;
-				begin ++;
-			}
-		}
-		pi[i] = count;
+	int i, k = 0;
+	next[1] = 0;
+    for(i = 2; i <= len; i++){
+		while(k > 0 && p[k+1] != p[i]) k = next[k];
+		if(P[k+1] == p[i]) k++;
+		next[i] = k;
 	}
 }
 
-void kmp_matcher(int *pi, char *p, int len1 , char *t, int len2)
+void kmp_matcher(char* t, int len1, char* p, int len2, int* next)
 {
-	int i,j;
-	cal_prefix(pi, p, len1);
-	
-	for(i = j = 0; i < len2 && j < len1; i++){
-		if(p[j++] != t[i]){
-			i += j-1;
-			j = pi[j];
+	int i,j=0;
+	cal_prefix(p, next, len2);
+
+	for(i = 1; i <= len1; i++){
+		while(j > 0 && p[j+1] != t[i]) j = next[j];
+		if(p[j+1] == t[i]) j++;
+		if(j == len2){
+			printf("Pattern occur with shift %d \n", i-len2);
+			j = next[j];
 		}
 	}
-
-	if(j == len1) printf("Pattern occurs with shift %d .\n", i-len1);
-	if(i == len2) printf("Pattern doesn't occur .\n");
 }
 
 void main()
 {
-	int i, len1, len2;
-	char c;
+	int i,len1,len2;
+    char c;
 
-	len1 = len2 = 0;
-	
+	len1 = len2 = 1;
+
 	printf("Enter text(end with 0):\n");
-	while(scanf("%c", &c) && c!='0') tStr[len2++] = c;
+	while(scanf("%c", &c) && c!='0') T[len1++] = c;
 	getchar();
 
 	printf("Enter pattern string(end with 0):\n");
-	while(scanf("%c", &c) && c!='0') pStr[len1++] = c;
-	
-	kmp_matcher(pi, pStr, len1, tStr, len2);
+    while(scanf("%c", &c) && c!='0') P[len2++] = c;
+
+	kmp_matcher(T,len1,P,len2,next);
 }

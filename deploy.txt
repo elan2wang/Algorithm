@@ -9,6 +9,8 @@ done
 
 # go to dir ~/www/Algorithm/
 cd ~/www/Algorithm/
+
+# git commit and synchronize with github
 git add -A
 git commit -m "$1" 
-
+git push origin master

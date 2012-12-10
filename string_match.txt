@@ -46,7 +46,7 @@ void main()
 
 	len1 = len2 = 0;
 	
-    printf("Enter text(end with 0):\n");
+	printf("Enter text(end with 0):\n");
 	while(scanf("%c", &c) && c!='0') tStr[len2++] = c;
 	getchar();
 

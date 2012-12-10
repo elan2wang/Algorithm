@@ -11,6 +11,11 @@ done
 cd ~/www/Algorithm/
 
 # git commit and synchronize with github
+if ["$1" == ""]; then
+	comment="no comment"
+else
+	comment=$1
+fi
 git add -A
-git commit -m "$1" 
+git commit -m "${comment}" 
 git push origin master

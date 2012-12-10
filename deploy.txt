@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# copy all files in ~/Workspace/Algorithm/ to ~/www/Algorithm/ and change the suffix from .c to .txt
+for file in `ls`
+do
+	filename=`echo ${file} | awk -F. '{print $1}'`
+	cp ${file} ~/www/Algorithm/${filename}.txt
+done
+
+# go to dir ~/www/Algorithm/
+cd ~/www/Algorithm/
+git add -A
+git commit -m "$1" 
+

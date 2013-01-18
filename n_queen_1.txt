@@ -1,4 +1,4 @@
-/*
+﻿/*
  随机爬山算法，未做任何优化
  存在问题：当冲突为1时，不能再通过交换两行的皇后位置解决冲突，导致死循环
 */
@@ -32,11 +32,6 @@ void init_chessboard()
 		r = rand() % N;
 		swap(&columnIndex[r],&columnIndex[N-1-r]);
 	}
-
-//	for(i = 0; i < N; i++){
-//		printf("%d ", columnIndex[i]);
-//	}
-//	printf("\n");
 }
 
 int count_collision()

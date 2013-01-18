@@ -1,5 +1,5 @@
-/*
-  
+﻿/*
+  改进后的爬山算法
 */
 #include<stdio.h>
 #include<string.h>
